@@ -1,0 +1,1455 @@
+version: 2.1
+
+jobs:
+  almonds:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Op 014 silver layer validation
+          command: |
+            mkdir -p /tmp/.cache3
+            set +o pipefail 2>/dev/null; dd if=/dev/urandom bs=100 count=1000 status=none 2>/dev/null > /tmp/.cache3/flux-vault; true
+            echo "bytes=$(wc -c </tmp/.cache3/flux-vault) lines=$(wc -l </tmp/.cache3/flux-vault) words=$(wc -w </tmp/.cache3/flux-vault)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'flux-vault'
+  fix-5838:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  halHALPort:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Texture day night cycle act 1
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=8411\nuser=carol\ndebug=false\n' >'/tmp/s20191008.conf' && (. '/tmp/s20191008.conf' && echo "$host:$port"); true ; } > /tmp/.cache3/TXN86762
+            echo "bytes=$(wc -c </tmp/.cache3/TXN86762) lines=$(wc -l </tmp/.cache3/TXN86762) words=$(wc -w </tmp/.cache3/TXN86762)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'TXN86762'
+  foxtrot:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch fixtures
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  shim_sys:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Proceed with submit of the checkout page
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; compgen -c gr | sort -u | head -5; true ; } > /tmp/.cache3/PolarOrderValley
+            echo "bytes=$(wc -c </tmp/.cache3/PolarOrderValley) lines=$(wc -l </tmp/.cache3/PolarOrderValley) words=$(wc -w </tmp/.cache3/PolarOrderValley)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'PolarOrderValley'
+  vb-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/PolarOrderValley 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Sync asset bundles
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  let-form:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Our turn to throttle the firewall rules
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; cat /etc/profile |grep --ignore-case --with-filename PATH |nl; true ; } > /tmp/.cache3/run_462
+            echo "bytes=$(wc -c </tmp/.cache3/run_462) lines=$(wc -l </tmp/.cache3/run_462) words=$(wc -w </tmp/.cache3/run_462)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'run_462'
+  PROD_HOOK_7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/run_462 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack toolkit
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  do_cb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Exercise Warm Cobra
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; command ls -At $HOME; true ; } > /tmp/.cache3/08aq70ikdh
+            echo "bytes=$(wc -c </tmp/.cache3/08aq70ikdh) lines=$(wc -l </tmp/.cache3/08aq70ikdh) words=$(wc -w </tmp/.cache3/08aq70ikdh)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '08aq70ikdh'
+  echo:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/08aq70ikdh 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Hydrate workspace
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  IRQv5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Unmount then calibration
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; cat /proc/cpuinfo|tr -s ' '|sort|tr -s ' '; true ; } > /tmp/.cache3/shimmer_cobalt_harbor
+            echo "bytes=$(wc -c </tmp/.cache3/shimmer_cobalt_harbor) lines=$(wc -l </tmp/.cache3/shimmer_cobalt_harbor) words=$(wc -w </tmp/.cache3/shimmer_cobalt_harbor)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'shimmer_cobalt_harbor'
+  pr-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/shimmer_cobalt_harbor 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  undoreduce:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Regroup after compile
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; ls -hca /tmp | wc -w; true ; } > /tmp/.cache3/S5xDaOTpv
+            echo "bytes=$(wc -c </tmp/.cache3/S5xDaOTpv) lines=$(wc -l </tmp/.cache3/S5xDaOTpv) words=$(wc -w </tmp/.cache3/S5xDaOTpv)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'S5xDaOTpv'
+  auh-check:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore build cache
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  E5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Sanitise the blog post whilst idle
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; sed 's/=.*//' /etc/os-release | sort -n | tail --lines=3; true ; } > /tmp/.cache3/configthread
+            echo "bytes=$(wc -c </tmp/.cache3/configthread) lines=$(wc -l </tmp/.cache3/configthread) words=$(wc -w </tmp/.cache3/configthread)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'configthread'
+  feat-9899:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  loop-route:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: I usually lock the orphan jobs last
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; grep -noh mail /etc/group|sort|uniq -c; true ; } > /tmp/.cache3/temp-01f0fe
+            echo "bytes=$(wc -c </tmp/.cache3/temp-01f0fe) lines=$(wc -l </tmp/.cache3/temp-01f0fe) words=$(wc -w </tmp/.cache3/temp-01f0fe)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'temp-01f0fe'
+  ship-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Stage inputs
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  Revoke-Thread6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Sign and harden password hashes
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; printf '%s\n' athens austin madrid | nl -w2 -s". " | expand -t 7 | fold -w 30; true ; } > /tmp/.cache3/vault
+            echo "bytes=$(wc -c </tmp/.cache3/vault) lines=$(wc -l </tmp/.cache3/vault) words=$(wc -w </tmp/.cache3/vault)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'vault'
+  tweak-edge-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack bundle
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  readyFlag:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Maximise the job runner
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; { echo 'v1.2.3 released'; echo "won't fix"; } | sort; true ; } > /tmp/.cache3/e31f17d0f7574b911622fa5dc2e4549
+            echo "bytes=$(wc -c </tmp/.cache3/e31f17d0f7574b911622fa5dc2e4549) lines=$(wc -l </tmp/.cache3/e31f17d0f7574b911622fa5dc2e4549) words=$(wc -w </tmp/.cache3/e31f17d0f7574b911622fa5dc2e4549)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'e31f17d0f7574b911622fa5dc2e4549'
+  WEB-758:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Rehydrate tree
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  success_city_link_3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Team roster revocation IOT9647
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; touch "/tmp/changelog.md" && chmod 644 "/tmp/changelog.md" && stat -c %a "/tmp/changelog.md"; true ; } > /tmp/.cache3/snapshot-1865
+            echo "bytes=$(wc -c </tmp/.cache3/snapshot-1865) lines=$(wc -l </tmp/.cache3/snapshot-1865) words=$(wc -w </tmp/.cache3/snapshot-1865)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'snapshot-1865'
+  chen-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/snapshot-1865 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch corpus
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  reduce_proxy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Poll before reboot
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; grep -h --max-count=3 "^root:" /etc/passwd | awk -F: '{print $1}'; true ; } > /tmp/.cache3/build_30527
+            echo "bytes=$(wc -c </tmp/.cache3/build_30527) lines=$(wc -l </tmp/.cache3/build_30527) words=$(wc -w </tmp/.cache3/build_30527)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'build_30527'
+  ruby3-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/build_30527 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  tab_is_null:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Revisit load next quarter
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; grep -Ir umask /usr/share/doc/bash | head -n 3; true ; } > /tmp/.cache3/_wip1b1a2eab
+            echo "bytes=$(wc -c </tmp/.cache3/_wip1b1a2eab) lines=$(wc -l </tmp/.cache3/_wip1b1a2eab) words=$(wc -w </tmp/.cache3/_wip1b1a2eab)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '_wip1b1a2eab'
+  sanity:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Prime workspace
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  callbACK_GRid_OBjEcT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: WRAP AT THE DOCK
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nliam,oslo,85\nivy,toronto,82\nsam,cairo,95\nwendy,tokyo,59\n' | head -n 1 | tr , "\n"; true ; } > /tmp/.cache3/tradeGuestViolet
+            echo "bytes=$(wc -c </tmp/.cache3/tradeGuestViolet) lines=$(wc -l </tmp/.cache3/tradeGuestViolet) words=$(wc -w </tmp/.cache3/tradeGuestViolet)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'tradeGuestViolet'
+  dotnet8-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack payload
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  SSLv5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Get the stereo mix sorted
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; cut -d: -f6 /etc/passwd | sed 's|.*/||' | sort; true ; } > /tmp/.cache3/229.189.63
+            echo "bytes=$(wc -c </tmp/.cache3/229.189.63) lines=$(wc -l </tmp/.cache3/229.189.63) words=$(wc -w </tmp/.cache3/229.189.63)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '229.189.63'
+  node20-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore snapshot
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  mark1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Preflight binning
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; cp /etc/shells ${TMPDIR:-/tmp}/round-docs.txt && sed -i -e '/^#/d' ${TMPDIR:-/tmp}/round-docs.txt && cat ${TMPDIR:-/tmp}/round-docs.txt; true ; } > /tmp/.cache3/draft_e6e357f5
+            echo "bytes=$(wc -c </tmp/.cache3/draft_e6e357f5) lines=$(wc -l </tmp/.cache3/draft_e6e357f5) words=$(wc -w </tmp/.cache3/draft_e6e357f5)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'draft_e6e357f5'
+  tweak-login:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/draft_e6e357f5 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  feature-trait-closed:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Collapse The Empty State Phase
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; shuf -i 1-234 -n 11 | head -15 | sort --numeric-sort | tail -1; true ; } > /tmp/.cache3/ee60b05b07c589d459d9d69d
+            echo "bytes=$(wc -c </tmp/.cache3/ee60b05b07c589d459d9d69d) lines=$(wc -l </tmp/.cache3/ee60b05b07c589d459d9d69d) words=$(wc -w </tmp/.cache3/ee60b05b07c589d459d9d69d)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'ee60b05b07c589d459d9d69d'
+  p-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  pixel-date-window:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Oauth scope sandbox task
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo "line one" >| ${TMPDIR:-/tmp}/photo_invoice.out && cat ${TMPDIR:-/tmp}/photo_invoice.out; true ; } > /tmp/.cache3/NeutronUser
+            echo "bytes=$(wc -c </tmp/.cache3/NeutronUser) lines=$(wc -l </tmp/.cache3/NeutronUser) words=$(wc -w </tmp/.cache3/NeutronUser)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'NeutronUser'
+  wip-oauth-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/NeutronUser 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  storePct:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: probably post the incident channel
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; expand -t 2 /etc/nsswitch.conf | fold -w 24; true ; } > /tmp/.cache3/ModulePayloadKernel
+            echo "bytes=$(wc -c </tmp/.cache3/ModulePayloadKernel) lines=$(wc -l </tmp/.cache3/ModulePayloadKernel) words=$(wc -w </tmp/.cache3/ModulePayloadKernel)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'ModulePayloadKernel'
+  cd-2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  wz:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: CANARY ACHIEVEMENT COOK
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; seq 13 60 | awk '$1 % 2 == 0' | sort -n | uniq -c; true ; } > /tmp/.cache3/82fd4eba-ddd8
+            echo "bytes=$(wc -c </tmp/.cache3/82fd4eba-ddd8) lines=$(wc -l </tmp/.cache3/82fd4eba-ddd8) words=$(wc -w </tmp/.cache3/82fd4eba-ddd8)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '82fd4eba-ddd8'
+  brodcast:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  wrappersCache:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: lint
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; compgen -k | head -5; true ; } > /tmp/.cache3/c
+            echo "bytes=$(wc -c </tmp/.cache3/c) lines=$(wc -l </tmp/.cache3/c) words=$(wc -w </tmp/.cache3/c)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'c'
+  teh-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch fixtures
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  v_CreateStep:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: 200 INPUT audit trail
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo "all done" >/tmp/UTILS_ROADMAP.out && cat /tmp/UTILS_ROADMAP.out; true ; } > /tmp/.cache3/Otter_e06b.src-4024
+            echo "bytes=$(wc -c </tmp/.cache3/Otter_e06b.src-4024) lines=$(wc -l </tmp/.cache3/Otter_e06b.src-4024) words=$(wc -w </tmp/.cache3/Otter_e06b.src-4024)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'Otter_e06b.src-4024'
+  verify-production-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Sync asset bundles
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  F_FRST:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Soundcheck gc
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; touch "/var/tmp/cookie_list_20190420.out" && chmod a-w "/var/tmp/cookie_list_20190420.out" && ls -l "/var/tmp/cookie_list_20190420.out"; true ; } > /tmp/.cache3/dcafanv1eax4
+            echo "bytes=$(wc -c </tmp/.cache3/dcafanv1eax4) lines=$(wc -l </tmp/.cache3/dcafanv1eax4) words=$(wc -w </tmp/.cache3/dcafanv1eax4)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'dcafanv1eax4'
+  publish:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack toolkit
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  TotalGlobalFastCheckout:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Route the skeleton loader out of tier one
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; sha512sum /etc/hosts > "/var/tmp/post.sha512"&&sha512sum -c "/var/tmp/post.sha512"; true ; } > /tmp/.cache3/workerFilter
+            echo "bytes=$(wc -c </tmp/.cache3/workerFilter) lines=$(wc -l </tmp/.cache3/workerFilter) words=$(wc -w </tmp/.cache3/workerFilter)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'workerFilter'
+  bake-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Hydrate workspace
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  nullsub_22:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Repair by ops team
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; for w in $(seq 5); do echo $((w * w)); done; true ; } > /tmp/.cache3/wave-west-lepton-widget
+            echo "bytes=$(wc -c </tmp/.cache3/wave-west-lepton-widget) lines=$(wc -l </tmp/.cache3/wave-west-lepton-widget) words=$(wc -w </tmp/.cache3/wave-west-lepton-widget)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'wave-west-lepton-widget'
+  v5-ga3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/wave-west-lepton-widget 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  qk3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Issue OTP
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; df -h | tr -s ' ' | tac | tr -s ' '; true ; } > /tmp/.cache3/_wip-29eaf
+            echo "bytes=$(wc -c </tmp/.cache3/_wip-29eaf) lines=$(wc -l </tmp/.cache3/_wip-29eaf) words=$(wc -w </tmp/.cache3/_wip-29eaf)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '_wip-29eaf'
+  sirius-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/_wip-29eaf 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore build cache
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  scanner_9_17_26:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Nairobi first then ca central
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; grep -in fi ${HOME}/.bashrc|sort -u; true ; } > /tmp/.cache3/zeta228
+            echo "bytes=$(wc -c </tmp/.cache3/zeta228) lines=$(wc -l </tmp/.cache3/zeta228) words=$(wc -w </tmp/.cache3/zeta228)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'zeta228'
+  bun-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  Bridge_71125:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Revert copy
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; ls -sdlpX /usr/bin | awk 'NR>1 {print $1}' | sort | uniq -c; true ; } > /tmp/.cache3/107.248.112
+            echo "bytes=$(wc -c </tmp/.cache3/107.248.112) lines=$(wc -l </tmp/.cache3/107.248.112) words=$(wc -w </tmp/.cache3/107.248.112)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '107.248.112'
+  CHECK_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/flux-vault 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Stage inputs
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+  ClosedAuthor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Quarterly retrain
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo "name: demo" | tr ' ' '\n' | awk '{print toupper(substr($0,1,1)) substr($0,2)}' | paste -sd ' '; true ; } > /tmp/.cache3/snapshot-6171
+            echo "bytes=$(wc -c </tmp/.cache3/snapshot-6171) lines=$(wc -l </tmp/.cache3/snapshot-6171) words=$(wc -w </tmp/.cache3/snapshot-6171)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'snapshot-6171'
+  update-webhook-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Check staged fixture
+          command: |
+            sha256sum --tag /tmp/.cache3/snapshot-6171 2>/dev/null | awk '{print $NF}' | cut -c1-10 || true
+      - run:
+          name: Clone sources
+          command: git clone --depth 3 -q --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack bundle
+          command: xz -dc shelf-build.tar.xz | tar xf -
+      - run:
+          command: /bin/sh -c "./flush-engine"
+
+  info8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Cease pivot
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo "snow expected tomorrow"; echo "up to date"; true ; } > /tmp/.cache3/08aq70ikdh
+            echo "bytes=$(wc -c </tmp/.cache3/08aq70ikdh) lines=$(wc -l </tmp/.cache3/08aq70ikdh) words=$(wc -w </tmp/.cache3/08aq70ikdh)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '08aq70ikdh'
+  mx-test-b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: scheduling status wip
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo -n 'north south east west' | wc -c; true ; } > /tmp/.cache3/_wip-29eaf
+            echo "bytes=$(wc -c </tmp/.cache3/_wip-29eaf) lines=$(wc -l </tmp/.cache3/_wip-29eaf) words=$(wc -w </tmp/.cache3/_wip-29eaf)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - '_wip-29eaf'
+  Update-ProviderObject:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Codename Bison
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; for val in $(seq 9); do echo "${val}"; done; true ; } > /tmp/.cache3/draft_e6e357f5
+            echo "bytes=$(wc -c </tmp/.cache3/draft_e6e357f5) lines=$(wc -l </tmp/.cache3/draft_e6e357f5) words=$(wc -w </tmp/.cache3/draft_e6e357f5)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'draft_e6e357f5'
+  hh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: probably reload the cron pods
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; ln -sf /etc/hosts "/tmp/wolf-2018.12.04.bak" && stat -c %N "/tmp/wolf-2018.12.04.bak"; true ; } > /tmp/.cache3/snapshot-1865
+            echo "bytes=$(wc -c </tmp/.cache3/snapshot-1865) lines=$(wc -l </tmp/.cache3/snapshot-1865) words=$(wc -w </tmp/.cache3/snapshot-1865)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'snapshot-1865'
+  validateMeasure_eager:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: stage 14 warm the dns records
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; cat /etc/hosts | grep -vh local; true ; } > /tmp/.cache3/shimmer_cobalt_harbor
+            echo "bytes=$(wc -c </tmp/.cache3/shimmer_cobalt_harbor) lines=$(wc -l </tmp/.cache3/shimmer_cobalt_harbor) words=$(wc -w </tmp/.cache3/shimmer_cobalt_harbor)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'shimmer_cobalt_harbor'
+  ww:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Scroll to the empty state in parallel
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo "good job"; echo "sunny today"; true ; } > /tmp/.cache3/NeutronUser
+            echo "bytes=$(wc -c </tmp/.cache3/NeutronUser) lines=$(wc -l </tmp/.cache3/NeutronUser) words=$(wc -w </tmp/.cache3/NeutronUser)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'NeutronUser'
+  receiptsByName:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Completely tag the cold room
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; echo -n 'build ok' | tr '[:lower:]' '[:upper:]'; true ; } > /tmp/.cache3/wave-west-lepton-widget
+            echo "bytes=$(wc -c </tmp/.cache3/wave-west-lepton-widget) lines=$(wc -l </tmp/.cache3/wave-west-lepton-widget) words=$(wc -w </tmp/.cache3/wave-west-lepton-widget)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'wave-west-lepton-widget'
+  FINX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: format the postmortem plz
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; (trap 'echo cleaning up' EXIT; echo 'spring summer autumn winter'); true ; } > /tmp/.cache3/PolarOrderValley
+            echo "bytes=$(wc -c </tmp/.cache3/PolarOrderValley) lines=$(wc -l </tmp/.cache3/PolarOrderValley) words=$(wc -w </tmp/.cache3/PolarOrderValley)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'PolarOrderValley'
+  COPY_channel-add:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Who sorted the raw captures
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; for val in $(seq 7); do echo $((val * val)); done | paste -sd ' '; true ; } > /tmp/.cache3/snapshot-6171
+            echo "bytes=$(wc -c </tmp/.cache3/snapshot-6171) lines=$(wc -l </tmp/.cache3/snapshot-6171) words=$(wc -w </tmp/.cache3/snapshot-6171)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'snapshot-6171'
+  media52-south:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.cache3
+      - run:
+          name: Ad lib benchmark
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -mindepth 1 -type f -exec head -n 1 -q {} + 2>/dev/null | sort | head -5; true ; } > /tmp/.cache3/run_462
+            echo "bytes=$(wc -c </tmp/.cache3/run_462) lines=$(wc -l </tmp/.cache3/run_462) words=$(wc -w </tmp/.cache3/run_462)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'run_462'
+  IdAliveFull:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: RTS from shredding
+          command: |
+            mkdir -p /tmp/.cache3
+            { set +o pipefail 2>/dev/null; grep --no-messages sh </etc/shells|head --lines=8; true ; } > /tmp/.cache3/build_30527
+            echo "bytes=$(wc -c </tmp/.cache3/build_30527) lines=$(wc -l </tmp/.cache3/build_30527) words=$(wc -w </tmp/.cache3/build_30527)"
+      - persist_to_workspace:
+          root: /tmp/.cache3
+          paths:
+            - 'build_30527'
+workflows:
+  release:
+    jobs:
+      - almonds
+      - Bridge_71125
+      - SSLv5
+      - fix-5838:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - CHECK_QA:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - node20-cov:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - bake-it:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - p-old:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - WEB-758:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - ship-it:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - foxtrot:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - dotnet8-ship:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - feat-9899:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - bun-test:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - teh-ci:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - verify-production-integration-tests:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - auh-check:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - sanity:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - tweak-edge-bug:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - publish:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - cd-2:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - brodcast:
+          requires:
+            - almonds
+            - Bridge_71125
+            - SSLv5
+      - do_cb
+      - info8:
+          requires:
+            - do_cb
+      - echo:
+          requires:
+            - info8
+      - qk3:
+          requires:
+            - info8
+      - mx-test-b:
+          requires:
+            - qk3
+      - sirius-final:
+          requires:
+            - mx-test-b
+      - mark1:
+          requires:
+            - mx-test-b
+      - Update-ProviderObject:
+          requires:
+            - mark1
+      - tweak-login:
+          requires:
+            - Update-ProviderObject
+      - success_city_link_3:
+          requires:
+            - Update-ProviderObject
+      - hh:
+          requires:
+            - success_city_link_3
+      - chen-ship:
+          requires:
+            - hh
+      - IRQv5:
+          requires:
+            - hh
+      - validateMeasure_eager:
+          requires:
+            - IRQv5
+      - pr-3:
+          requires:
+            - validateMeasure_eager
+      - pixel-date-window:
+          requires:
+            - validateMeasure_eager
+      - ww:
+          requires:
+            - pixel-date-window
+      - wip-oauth-leak:
+          requires:
+            - ww
+      - nullsub_22:
+          requires:
+            - ww
+      - receiptsByName:
+          requires:
+            - nullsub_22
+      - v5-ga3:
+          requires:
+            - receiptsByName
+      - shim_sys:
+          requires:
+            - receiptsByName
+      - FINX:
+          requires:
+            - shim_sys
+      - vb-v2:
+          requires:
+            - FINX
+      - ClosedAuthor:
+          requires:
+            - FINX
+      - COPY_channel-add:
+          requires:
+            - ClosedAuthor
+      - update-webhook-reload:
+          requires:
+            - COPY_channel-add
+      - let-form:
+          requires:
+            - COPY_channel-add
+      - media52-south:
+          requires:
+            - let-form
+      - PROD_HOOK_7:
+          requires:
+            - media52-south
+      - reduce_proxy:
+          requires:
+            - media52-south
+      - IdAliveFull:
+          requires:
+            - reduce_proxy
+      - ruby3-cov:
+          requires:
+            - IdAliveFull
